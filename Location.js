@@ -57,11 +57,18 @@ outpost.Templates = (function() {
     var outpost_abandoned = outpost_constructer("Abandoned", 2, 3, 2, 30, 3, 3);
     var outpost_oasis = outpost_constructer("Oasis", 2, 1, 3, 40, 2, 1);
     var outpost_marsh = outpost_constructer("Marsh", 3, 3, 2, 30, 1, 2);
-    var types = [outpost_wasteland, outpost_mountains, outpost_ravines, outpost_abandoned, outpost_oasis, outpost_marsh];
+    var outpost_types = [outpost_wasteland, outpost_mountains, outpost_ravines, outpost_abandoned, outpost_oasis, outpost_marsh];
 
     return {
         get_new_outpost : function() {
-            return types[Math.randomInt(types.length)];
+            return outpost_types[Math.randomInt(outpost_types.length)];
+        },
+        get_outpost_by_name : function(name) {
+            for(var o in outpost_types){
+                if(o.name === name){
+                    return o;
+                }
+            }
         }
     };
 }());
@@ -83,7 +90,7 @@ outpost.Characteristics = (function() {
     }
 
     function calculate_carrying_capacity() {
-        var survivors_left = world.Survivors.get_survivors().length;
+        var survivors_left = survivor.CharacterManager.get_alive().length;
         var mid = Math.floor(survivors_left / 2);
         mid = (mid === 0) ? 1 : mid;
         carryingCapacity = mid * Math.randomInt(currentType.outpost_carrying_capacity);
@@ -94,11 +101,11 @@ outpost.Characteristics = (function() {
     }
 
     function calculate_water() {
-        return world.Survivors.get_survivors().length * currentType.outpost_water;
+        return survivor.CharacterManager.get_alive().length * currentType.outpost_water;
     }
 
     function calculate_food() {
-        return world.Survivors.get_survivors().length * currentType.outpost_food;
+        return survivor.CharacterManager.get_alive().length * currentType.outpost_food;
     }
 
     return {

@@ -2,7 +2,12 @@
  * Created by samwe on 21/08/2016.
  */
 function start() {
-    outpost.Characteristics.get_new_outpost()
+    $(document).on("click", ".toggle_button", function(){
+        $(this).toggleClass("down");
+    });
+
+    outpost.Characteristics.get_new_outpost();
+    survivor.CharacterManager.create_survivor();
     world.General.advance_day();
     setInterval(updateUI, 16);
 }
@@ -15,11 +20,11 @@ function updateUI() {
 
         $("#location_label").text(outpost.Characteristics.get_type().name);
 
-        $("#group_size_label").text(world.Survivors.get_survivors().length + " survivors");
+        $("#group_size_label").text(survivor.CharacterManager.get_alive().length + " survivors");
         $("#day_number_label").text("Day " + world.General.get_day());
         $("#weather_label").text(world.General.get_weather().name);
         $("#temperature_label").text(world.General.get_temperature() + "\xB0C");
     }
 }
 
-$(window).load(start());
+$(document).ready(start());

@@ -16,6 +16,9 @@ world.General = (function() {
         temperature = outpost.Characteristics.get_type().outpost_climate * temperaturevariation + currentweather.temperature_bonus;
         temperature = Math.floor(temperature);
         outpost.Characteristics.change_weather(currentweather);
+        if(Math.random() < 0.4){
+            survivor.CharacterManager.create_survivor();
+        }
         ready = true;
     }
 
@@ -37,22 +40,6 @@ world.General = (function() {
         }
     };
 }());
-
-world.Survivors = (function() {
-    var survivors = [];
-
-    return {
-      add_survivor : function(survivor) {
-          survivors.add(colonist);
-      },
-      remove_survivor : function(survivor) {
-          survivors.remove(colonist);
-      },
-      get_survivors : function(){
-          return survivors;
-      }
-    };
-})();
 
 world.Resources = (function() {
     var water = 0;
@@ -110,6 +97,7 @@ world.Weather = (function() {
     var weather_foggy = weather_constructor("Foggy", 0, -1, 2, -5);
     var weather_sandstorm = weather_constructor("Sandstorm", -2, -3, 0, 5);
     var weather_floods = weather_constructor("Floods", 3, -3, 3, 0);
+    var weather_types = [weather_drizzle, weather_rainy, weather_clear, weather_cloudy, weather_thunderstorm, weather_foggy, weather_sandstorm, weather_floods];
 
     return {
         get_weather: function () {
@@ -130,6 +118,13 @@ world.Weather = (function() {
                 return weather_sandstorm;
             } else {
                 return weather_floods;
+            }
+        },
+        get_weather_by_name: function(name) {
+            for(var w in weather_types){
+                if(w.name === name){
+                    return w;
+                }
             }
         }
     }

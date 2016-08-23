@@ -68,3 +68,22 @@ body {
 #next_day_button:focus {
     outline:0;
 }
+
+.toggle_button {
+    cursor: pointer;
+    border: 2px solid white;
+    padding: 5px 5px;
+    background: black;
+}
+
+.toggle_button.down {
+    border: 2px solid white;
+    background: white;
+    padding: 5px 5px;
+}
+
+.survivor_div > * {
+    float: left;
+    width: 10%;
+    height: 5%;
+}
