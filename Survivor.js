@@ -12,5 +12,3 @@ survivor.Character = (function() {
     var backstory;
     var name;
 })();
-
-survivor.
