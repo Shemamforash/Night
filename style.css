@@ -69,13 +69,23 @@ body {
     outline:0;
 }
 
+.toggle_div {
+    height: 100%;
+    position: relative;
+    width: 8%;
+}
+
 .toggle_button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     cursor: pointer;
     border: 2px solid white;
     padding: 5px 5px;
     background: black;
-    width: 40px;
-    height: 40px;
+    width: 15px;
+    height: 15px;
 }
 
 .toggle_button.down {
@@ -88,10 +98,10 @@ body {
     position: relative;
     display: inline-block;
     height: 40px;
-    width: 100%;
     float: left;
-    margin-left: 50px;
-    margin-right: 50px;
+    width: 96%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .survivor_div > * {
@@ -113,8 +123,8 @@ body {
 
     position: absolute;
     z-index: 1;
-    bottom: 30%;
-    left: 50%;
+    bottom: 100%;
+    left: 0%;
 
     white-space: pre;
     text-align: left;
@@ -127,9 +137,22 @@ body {
     opacity: 1;
 }
 
+#table_headers {
+    width: 96%;
+    height: 60px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+#table_headers > * {
+    float: left;
+    height: 40px;
+    line-height: 40px;
+}
+
 .survivor_name {
     text-align: left;
-    width: 15%;
+    width: 14%;
 }
 
 .survivor_trait {
@@ -138,5 +161,5 @@ body {
 }
 
 .survivor_resource {
-    width: 5%;
+    width: 7%;
 }

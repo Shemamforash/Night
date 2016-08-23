@@ -5,7 +5,6 @@ function start() {
     $(document).on("click", ".toggle_button", function(){
         $(this).toggleClass("down");
     });
-
     outpost.Characteristics.get_new_outpost();
     survivor.CharacterManager.create_survivor();
     world.General.advance_day();
@@ -37,7 +36,9 @@ function add_survivor_elements(s) {
     $div.append("<div class=\"survivor_resource\">" + s.water_find_skill + "</div>");
     $div.append("<div class=\"survivor_resource\">" + s.fuel_find_skill + "</div>");
 
-    $div.append("<a class=\"toggle_button\"></a>");
+    var $toggle_div = $("<div>", {"class": "toggle_div"});
+    $div.append($toggle_div);
+    $toggle_div.append("<a class=\"toggle_button\"></a>");
 
     var $tooltip = $("<span>", {id: (s.survivor_name + "_tooltip"), "class": "tooltip_span"});
     //Tooltip shows age, gender, weight, backstory, preferred temp/weather/outpost
@@ -87,4 +88,4 @@ function updateUI() {
     }
 }
 
-$(document).ready(start());
+$(document).ready(start);
