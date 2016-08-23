@@ -4,9 +4,9 @@
 var survivor = {};
 
 survivor.CharacterCreator = (function() {
-    var female_names = [];
-    var male_names = [];
-    var surnames = [];
+    var female_names = ["Alette", "Temika", "Jeri", "Melinda", "Marcia", "Corine", "Heike", "Krishna", "Letitia", "Naomi", "Yasuko", "Karie", "Grazyna", "Ethelene", "Audry", "Melda", "Katherine", "Nell"];
+    var male_names = ["Hai", "Riley", "Kristoff", "Angbard", "Rob", "Alvaro", "James", "Abel", "Stephen", "Mikki", "Alexander", "Paolo", "Vladimir", "Harald", "Max", "Michael", "Emory", "Byron", "Daniel"];
+    var surnames = ["Copeland", "Delgado", "Hess", "Horton", "Garrett", "Freysson", "Yang", "Blackeye", "Longscab", "Redhand", "Deepdweller", "Sungazer", "Bottomeater", "Eaton", "Koch", "Diaz", "O'connoll", "Divider"];
 
     var backstory = "I am a survivor.";
 
@@ -58,9 +58,9 @@ survivor.CharacterCreator = (function() {
     var water_need = weight_modifier; //Affected by weight only
     var food_need = age_modifier * weight_modifier ; //Affected by weight and age
 
-    var fuel_find_skill = Math.random() * age_modifier; //Affected by age
-    var water_find_skill = Math.random() * age_modifier; //Affected by age
-    var food_find_skill = Math.random() * age_modifier; //Affected by age
+    var fuel_find_skill = Math.floor(Math.random() * age_modifier * 10); //Affected by age
+    var water_find_skill = Math.floor(Math.random() * age_modifier * 10); //Affected by age
+    var food_find_skill = Math.floor(Math.random() * age_modifier * 10); //Affected by age
 
     var strength = age_modifier * weight_modifier * Math.random(); //Affected by age and gender
 
@@ -72,10 +72,13 @@ survivor.CharacterCreator = (function() {
 
     var preferred_temperature = 17 + Math.randomInt(8);
 
+    //Show outpost_name, trait_1, trait_2, fuel/water/food need and skill, strength
+    //Tooltip shows age, gender, weight, backstory, preferred temp/weather/outpost
     return {
         survivor_name: survivor_name,
         age: age,
         gender: gender,
+        weight: weight,
         backstory: backstory,
         trait_1: trait_1,
         trait_2: trait_2,
@@ -105,6 +108,7 @@ survivor.CharacterManager = (function() {
             new_char.trait_1.execute_trait(new_char);
             new_char.trait_2.execute_trait(new_char);
             survivors_alive.push(new_char);
+            add_survivor_elements(new_char);
             return new_char;
         },
         kill_survivor : function(s) {

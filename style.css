@@ -74,6 +74,8 @@ body {
     border: 2px solid white;
     padding: 5px 5px;
     background: black;
+    width: 40px;
+    height: 40px;
 }
 
 .toggle_button.down {
@@ -82,8 +84,59 @@ body {
     padding: 5px 5px;
 }
 
+.survivor_div {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    float: left;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
 .survivor_div > * {
     float: left;
+    height: 40px;
+}
+
+.survivor_div > div {
+    line-height: 40px;
+}
+
+.tooltip_span {
+    visibility: hidden;
+    width: 300px;
+    height: auto;
+    border: 2px solid white;
+    padding: 15px;
+    background: black;
+
+    position: absolute;
+    z-index: 1;
+    bottom: 30%;
+    left: 50%;
+
+    white-space: pre;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.survivor_div:hover .tooltip_span {
+    visibility: visible;
+    opacity: 1;
+}
+
+.survivor_name {
+    text-align: left;
+    width: 15%;
+}
+
+.survivor_trait {
     width: 10%;
-    height: 5%;
+    text-align: left;
+}
+
+.survivor_resource {
+    width: 5%;
 }

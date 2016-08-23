@@ -33,7 +33,7 @@ outpost.Templates = (function() {
     "use strict";
     function outpost_constructer(name, cap, fuel, water, food, climate, danger){
         return {
-            name: name,
+            outpost_name: name,
             outpost_carrying_capacity : cap,
             outpost_fuel: fuel,
             outpost_water: water,
@@ -64,9 +64,9 @@ outpost.Templates = (function() {
             return outpost_types[Math.randomInt(outpost_types.length)];
         },
         get_outpost_by_name : function(name) {
-            for(var o in outpost_types){
-                if(o.name === name){
-                    return o;
+            for(var i = 0; i < outpost_types.length; ++i){
+                if(outpost_types[i].outpost_name === name){
+                    return outpost_types[i];
                 }
             }
         }

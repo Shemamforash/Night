@@ -71,7 +71,7 @@ world.Resources = (function() {
 world.Weather = (function() {
     function weather_constructor(name, waterbonus, foodbonus, dangerbonus, temperaturebonus) {
         return {
-            name: name,
+            weather_name: name,
             water_bonus: waterbonus,
             food_bonus: foodbonus,
             danger_bonus: dangerbonus,
@@ -121,9 +121,9 @@ world.Weather = (function() {
             }
         },
         get_weather_by_name: function(name) {
-            for(var w in weather_types){
-                if(w.name === name){
-                    return w;
+            for(var i = 0; i < weather_types.length; ++i){
+                if(weather_types[i].weather_name === name){
+                    return weather_types[i];
                 }
             }
         }
