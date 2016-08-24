@@ -3,6 +3,50 @@
  */
 var world = {};
 
+world.kill_random = function() {
+    var rand = helper.randomInt(survivor.CharacterManager.get_alive().length);
+    return survivor.CharacterManager.kill_survivor(survivor.CharacterManager.get_alive()[rand]);
+};
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}
+
+world.feed_and_drink = function() {
+    var preferred_survivors = [];
+    var others = [];
+    var s;
+
+    for(var i = 0; i < survivor.CharacterManager.get_alive().length; ++i){
+        s = survivor.CharacterManager.get_alive()[i];
+        if(s.preferred){
+            preferred_survivors.push(s);
+        } else {
+            others.push(s);
+        }
+    }
+
+    shuffle(preferred_survivors);
+    shuffle(others);
+
+    for(i = 0; i < preferred_survivors.length; ++i){
+        s = preferred_survivors[i];
+        world.Resources.get_food().decrease(s.eat(world.Resources.get_food().get_remaining()));
+        world.Resources.get_water().decrease(s.drink(world.Resources.get_water().get_remaining()));
+    }
+    for(i = 0; i < others.length; ++i){
+        s = others[i];
+        world.Resources.get_food().decrease(s.eat(world.Resources.get_food().get_remaining()));
+        world.Resources.get_water().decrease(s.drink(world.Resources.get_water().get_remaining()));
+    }
+}
+
 world.General = (function() {
     var day = 0;
     var temperature = 30;
@@ -12,13 +56,18 @@ world.General = (function() {
     function changeDay() {
         day += 1;
         currentweather = world.Weather.get_weather();
-        var temperaturevariation = Math.random() * 2 + 9;
-        temperature = outpost.Characteristics.get_type().outpost_climate * temperaturevariation + currentweather.temperature_bonus;
-        temperature = Math.floor(temperature);
         outpost.Characteristics.change_weather(currentweather);
-        if(Math.random() < 0.4){
+        var temp_variation = Math.random() * 2 + 9;
+        temperature = outpost.Characteristics.get_current_outpost().outpost_climate * temp_variation + currentweather.temperature_bonus;
+        temperature = Math.floor(temperature);
+        if(Math.random() < 0.4 && survivor.CharacterManager.get_alive().length < outpost.Characteristics.get_current_outpost().outpost_carrying_capacity){
             post_event(survivor.CharacterManager.create_survivor());
+        } else if (Math.random() < 0.05 && survivor.CharacterManager.get_alive().length > 1) {
+            var s_name = world.kill_random().survivor_name;
+            post_event("Figures came in the night. They took " + s_name);
         }
+        world.feed_and_drink();
+        survivor_elements.reset_actions();
         ready = true;
     }
 
@@ -42,9 +91,11 @@ world.General = (function() {
 }());
 
 world.Resources = (function() {
-    var water = 0;
-    var fuel = 0;
-    var food = 0;
+    var water = helper.resource_creator("Water");
+    water.increase(helper.randomInt(10) + 10);
+    var fuel = helper.resource_creator("Fuel");
+    var food = helper.resource_creator("Food");
+    food.increase(helper.randomInt(5) + 5);
 
     return {
         get_water : function() {
@@ -55,15 +106,6 @@ world.Resources = (function() {
         },
         get_food : function() {
             return food;
-        },
-        update_water : function (amount) {
-            water += (water + amount) >= 0 ? amount : -water;
-        },
-        update_fuel : function (amount) {
-            fuel += (fuel + amount) >= 0 ? amount : -fuel;
-        },
-        update_food : function(amount) {
-            food += (food + amount) >= 0 ? amount : -food;
         }
     };
 })();
@@ -101,7 +143,7 @@ world.Weather = (function() {
 
     return {
         get_weather: function () {
-            var rand = Math.randomInt(25);
+            var rand = helper.randomInt(25);
             if (rand < 4) {
                 return weather_drizzle;
             } else if (rand < 6) {

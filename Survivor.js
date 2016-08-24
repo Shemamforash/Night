@@ -11,10 +11,14 @@ survivor.CharacterCreator = (function() {
     var backstory = "I am a survivor.";
 
     //Affects resource use
-    var age = Math.randomInt(50) + 10; //50y/o = 2 food, 20y/o=4, 10y/o = 3
-    var gender = (Math.randomInt(2) === 1) ? "Male" : "Female";
-    var weight = (gender === "Male") ? (Math.randomInt(20) + 60) : (Math.randomInt(15) + 50); //range is 50 to 80
-    var weight_modifier = Math.floor(weight / 10);
+    var age = helper.randomInt(50) + 10; //50y/o = 2 food, 20y/o=4, 10y/o = 3
+    var gender = (helper.randomInt(2) === 1) ? "Male" : "Female";
+    var weight = (gender === "Male") ? (helper.randomInt(20) + 60) : (helper.randomInt(15) + 50); //range is 50 to 80
+
+    //Upper bound = 4, lower bound = 1
+    var weight_modifier = Math.floor(weight / 10) - 4;
+
+    //Upper bound = 4, lower bound = 1
     var age_modifier = (function() {
         switch(Math.floor(age / 10)){
             case 1:
@@ -25,7 +29,7 @@ survivor.CharacterCreator = (function() {
                 return 3;
             case 4:
                 return 2;
-            case 50:
+            case 5:
                 return 1;
             default:
                 return 2;
@@ -35,8 +39,8 @@ survivor.CharacterCreator = (function() {
     var survivor_name = generate_name(100);
 
     function generate_name(i) {
-        var first_name = (gender === "Male") ? (male_names[Math.randomInt(male_names.length)]) : (female_names[Math.randomInt(female_names.length)]);
-        var surname = surnames[Math.randomInt(surnames.length)];
+        var first_name = (gender === "Male") ? (male_names[helper.randomInt(male_names.length)]) : (female_names[helper.randomInt(female_names.length)]);
+        var surname = surnames[helper.randomInt(surnames.length)];
         var full_name = first_name + " " + surname;
         for(var s in survivor.CharacterManager.get_all()) {
             if(s.survivor_name === full_name) {
@@ -53,14 +57,23 @@ survivor.CharacterCreator = (function() {
     var trait_1 = survivor.Traits.generate_new_trait();
     var trait_2 = survivor.Traits.generate_new_trait(trait_1); //Ensure trait is not identical to trait_1
 
+    //Upper bound = 7, lower bound = 2
+    var max_days_starvation = helper.randomInt(5) + 2;
+    //Upper bound = 4, lower bound = 1
+    var max_days_dehydration = helper.randomInt(3) + 1;
+
+    var days_starvation = helper.randomInt(2);
+    var days_dehydration = helper.randomInt(2);
+
     //Affected by various things
     var fuel_need = weight_modifier; //Affected by weight only
     var water_need = weight_modifier; //Affected by weight only
-    var food_need = age_modifier * weight_modifier ; //Affected by weight and age
+    var food_need = age_modifier + weight_modifier ; //Affected by weight and age
 
-    var fuel_find_skill = Math.floor(Math.random() * age_modifier * 10); //Affected by age
-    var water_find_skill = Math.floor(Math.random() * age_modifier * 10); //Affected by age
-    var food_find_skill = Math.floor(Math.random() * age_modifier * 10); //Affected by age
+    //Upper bound = 50, lower bound = 10
+    var fuel_find_skill = Math.floor(Math.random() * age_modifier * 10) + 10; //Affected by age
+    var water_find_skill = Math.floor(Math.random() * age_modifier * 10) + 10; //Affected by age
+    var food_find_skill = Math.floor(Math.random() * age_modifier * 10) + 10; //Affected by age
 
     var strength = age_modifier * weight_modifier * Math.random(); //Affected by age and gender
 
@@ -70,33 +83,24 @@ survivor.CharacterCreator = (function() {
     var preferred_outpost = [];
     var disliked_outpost = [];
 
-    function create_action(n, f){
-        return {
-            action_name: n,
-            execute_action: function(s) {
-                post_event(f(s));
-            }
-        };
-    }
-
     var actions = [];
-    actions.push(create_action("Find Water", function(s){
+    actions.push(helper.create_function_wrapper("Find Water", function(s){
         var found = outpost.Characteristics.get_water().gather(s);
-        world.Resources.update_water(found);
-        return s.survivor_name + " found " + Math.round(found * 10) / 10 + " litres of water";
+        world.Resources.get_water().increase(found.amount);
+        post_event(s.survivor_name + " found " + Math.round(found.amount * 10) / 10 + " litres of water. " + found.suffix);
     }));
-    actions.push(create_action("Find Food", function(s){
+    actions.push(helper.create_function_wrapper("Find Food", function(s){
         var found = outpost.Characteristics.get_food().gather(s);
-        world.Resources.update_food(found);
-        return s.survivor_name + " found " + Math.round(found * 10) / 10 + " morsels of food";
+        world.Resources.get_food().increase(found.amount);
+        post_event(s.survivor_name + " found " + Math.round(found.amount * 10) / 10 + " morsels of food. " + found.suffix);
     }));
-    actions.push(create_action("Find Fuel", function(s){
+    actions.push(helper.create_function_wrapper("Find Fuel", function(s){
         var found = outpost.Characteristics.get_fuel().gather(s);
-        world.Resources.update_fuel(found);
-        return s.survivor_name + " found " + Math.round(found * 10) / 10 + " tanks of fuel";
+        world.Resources.get_fuel().increase(found.amount);
+        post_event(s.survivor_name + " found " + Math.round(found.amount * 10) / 10 + " tanks of fuel. " + found.suffix);
     }));
 
-    var preferred_temperature = 17 + Math.randomInt(8);
+    var preferred_temperature = 17 + helper.randomInt(8);
 
     //Show outpost_name, trait_1, trait_2, fuel/water/food need and skill, strength
     //Tooltip shows age, gender, weight, backstory, preferred temp/weather/outpost
@@ -106,6 +110,10 @@ survivor.CharacterCreator = (function() {
         gender: gender,
         weight: weight,
         backstory: backstory,
+        max_days_starvation: max_days_starvation,
+        max_days_dehydration: max_days_dehydration,
+        days_dehydration: days_dehydration,
+        days_starvation: days_starvation,
         trait_1: trait_1,
         trait_2: trait_2,
         fuel_need: fuel_need,
@@ -121,13 +129,43 @@ survivor.CharacterCreator = (function() {
         disliked_outpost: disliked_outpost,
         preferred_temperature: preferred_temperature,
         actions: actions,
+        preferred: false,
         get_action_by_name : function(name) {
-            for(var i = 0; i < actions.length; ++i){
-                if(actions[i].action_name === name) {
-                    return actions[i];
+            for(var i = 0; i < this.actions.length; ++i){
+                if(this.actions[i].function_name === name) {
+                    return this.actions[i];
                 }
             }
             return null;
+        },
+        mark_preferred : function(b) {
+            this.preferred = b;
+        },
+        eat : function(food_left) {
+            if(food_left > 0){
+                this.days_starvation = 0;
+                return this.food_need;
+            } else {
+                this.days_starvation += 1;
+                if(this.days_starvation === this.max_days_starvation){
+                    survivor.CharacterManager.kill_survivor(this);
+                    post_event(this.survivor_name + " has died from starvation");
+                }
+                return 0;
+            }
+        },
+        drink : function(water_left) {
+            if(water_left >= 0){
+                this.days_dehydration = 0;
+                return this.water_need;
+            } else {
+                days_dehydration += 1;
+                if(this.days_dehydration === this.max_days_dehydration){
+                    survivor.CharacterManager.kill_survivor(this);
+                    post_event(this.survivor_name + " has died from thirst");
+                }
+                return 0;
+            }
         }
     }
 });
@@ -140,15 +178,17 @@ survivor.CharacterManager = (function() {
     return {
         create_survivor : function() {
             var new_char = survivor.CharacterCreator();
-            new_char.trait_1.execute_trait(new_char);
-            new_char.trait_2.execute_trait(new_char);
+            new_char.trait_1.execute(new_char);
+            new_char.trait_2.execute(new_char);
             survivors_alive.push(new_char);
             add_survivor_elements(new_char);
             return new_char.survivor_name + " has joined the group";
         },
         kill_survivor : function(s) {
-            survivors_alive.remove(s);
+            survivors_alive.splice(survivors_alive.indexOf(s), 1);
             survivors_dead.push(s);
+            survivor_elements.remove_element(s);
+            return s;
         },
         get_alive : function() {
             return survivors_alive;
@@ -175,35 +215,28 @@ survivor.CharacterManager = (function() {
 
 
 survivor.Traits = (function() {
-    function trait_constructor(n, f){
-        return {
-            trait_name: n,
-            execute_trait: f
-        }
-    }
-
     var all_traits = [];
-    all_traits.push(trait_constructor("Hot blooded", function(s) {
+    all_traits.push(helper.create_function_wrapper("Hot blooded", function(s) {
         s.preferred_temperature += 10;
     }));
-    all_traits.push(trait_constructor("Cold blooded", function(s) {
+    all_traits.push(helper.create_function_wrapper("Cold blooded", function(s) {
         s.preferred_temperature -= 10;
     }));
-    all_traits.push(trait_constructor("Sand rat", function(s){
+    all_traits.push(helper.create_function_wrapper("Sand rat", function(s){
         s.preferred_outpost.push(outpost.Templates.get_outpost_by_name("Wasteland"));
         s.preferred_weather.push(world.Weather.get_weather_by_name("Clear"));
     }));
-    all_traits.push(trait_constructor("Survivor", function(s){
+    all_traits.push(helper.create_function_wrapper("Survivor", function(s){
         s.food_need -= 1;
         s.water_need -= 1;
         s.food_find_skill += 1;
         s.water_find_skill += 1;
     }));
-    all_traits.push(trait_constructor("Skinny", function(s){
+    all_traits.push(helper.create_function_wrapper("Skinny", function(s){
         s.weight -= 1;
         s.food_need -= 1;
     }));
-    all_traits.push(trait_constructor("Obese", function(s){
+    all_traits.push(helper.create_function_wrapper("Obese", function(s){
         s.food_need += 1;
     }));
 
@@ -211,7 +244,7 @@ survivor.Traits = (function() {
         generate_new_trait : function(trait) {
             var random_trait = null;
             while(random_trait === null){
-                random_trait = all_traits[Math.randomInt(all_traits.length)];
+                random_trait = all_traits[helper.randomInt(all_traits.length)];
                 if(trait === random_trait){
                     random_trait = null;
                 }

@@ -19,6 +19,18 @@ var survivor_elements = (function() {
         },
         add_element : function(e){
             elements.push(e);
+        },
+        remove_element : function(s){
+            for(var i = 0; i < elements.length; ++i){
+                if(elements[i].attr("id") === s.survivor_name){
+                    elements[i].remove();
+                    break;
+                }
+            }
+        },
+        reset_actions : function(){
+            $(".survivor_actions").prop("disabled", false);
+            $(".survivor_actions").val("original");
         }
     };
 }());
@@ -34,8 +46,8 @@ function add_survivor_elements(s) {
     var $div = $("<div>", {id: s.survivor_name, "class": "survivor_div"});
     $("#middle-lower").append($div);
     $div.append("<div class=\"survivor_name\">" + s.survivor_name + "</div>");
-    $div.append("<div class=\"survivor_trait\">" + s.trait_1.trait_name + "</div>");
-    $div.append("<div class=\"survivor_trait\">" + s.trait_2.trait_name + "</div>");
+    $div.append("<div class=\"survivor_trait\">" + s.trait_1.function_name + "</div>");
+    $div.append("<div class=\"survivor_trait\">" + s.trait_2.function_name + "</div>");
     $div.append("<div class=\"survivor_resource\">" + s.food_need + "</div>");
     $div.append("<div class=\"survivor_resource\">" + s.water_need + "</div>");
     $div.append("<div class=\"survivor_resource\">" + s.fuel_need + "</div>");
@@ -45,7 +57,12 @@ function add_survivor_elements(s) {
 
     var $toggle_div = $("<div>", {"class": "toggle_div"});
     $div.append($toggle_div);
-    $toggle_div.append("<a class=\"toggle_button\"></a>");
+    var $toggle_button = $("<a>", {"class": "toggle_button"});
+    $toggle_button.click(function() {
+            s.mark_preferred(!s.get_preferred());
+        }
+    );
+    $toggle_div.append($toggle_button);
 
     var $dropdown = $("<select>", {"class": "survivor_actions"});
     $div.append($dropdown);
@@ -53,11 +70,14 @@ function add_survivor_elements(s) {
         var action = $($dropdown).find(":selected").text();
         var survivor_name = $($dropdown).find(":selected").val();
         var s = survivor.CharacterManager.get_character_by_name(survivor_name);
-        s.get_action_by_name(action).execute_action(s);
+        s.get_action_by_name(action).execute(s);
+        $dropdown.prop("disabled", true);
     });
 
+    $dropdown.append("<option selected disabled hidden value=\"original\">Choose activity</option>");
+
     for(var i = 0; i < s.actions.length; ++i){
-        $dropdown.append("<option value=\"" + s.survivor_name + "\">" + s.actions[i].action_name + "</option>");
+        $dropdown.append("<option value=\"" + s.survivor_name + "\">" + s.actions[i].function_name + "</option>");
     }
 
     var $tooltip = $("<span>", {id: (s.survivor_name + "_tooltip"), "class": "tooltip_span"});
@@ -95,11 +115,11 @@ function add_survivor_elements(s) {
 
 function updateUI() {
     if(world.General.is_world_ready()) {
-        $('#fuel_label').text("Fuel: " + outpost.Characteristics.get_fuel().get_remaining() + " tanks");
-        $('#food_label').text("Food: " + outpost.Characteristics.get_food().get_remaining() + " meals");
-        $('#water_label').text("Water: " + outpost.Characteristics.get_water().get_remaining() + " litres");
+        $('#fuel_label').text("Fuel: " + Math.floor(world.Resources.get_fuel().remaining) + " tanks");
+        $('#food_label').text("Food: " + Math.floor(world.Resources.get_food().remaining) + " meals");
+        $('#water_label').text("Water: " + (Math.round(world.Resources.get_water().remaining * 10) / 10) + " litres");
 
-        $("#location_label").text(outpost.Characteristics.get_type().outpost_name);
+        $("#location_label").text(outpost.Characteristics.get_current_outpost().outpost_name);
 
         $("#group_size_label").text(survivor.CharacterManager.get_alive().length + " survivors");
         $("#day_number_label").text("Day " + world.General.get_day());
