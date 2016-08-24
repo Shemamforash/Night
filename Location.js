@@ -15,6 +15,8 @@ function createResource(r_name) {
         } else {
             skill = survivor.food_find_skill;
         }
+
+        //Should be affected by how much they can carry (strength) and how much they can find (skill)
         var max_find = helper.randomInt(5) + 5;
         var found = max_find * skill / 50;
         if(found > this.remaining){
@@ -23,16 +25,16 @@ function createResource(r_name) {
         this.remaining -= found;
 
         var suffix = "The " + this.resource_name + " ";
-        if(this.remaining < 50){
-            suffix += "is abundant";
-        } else if (this.remaining < 25) {
-            suffix += "is dwindling";
-        } else if (this.remaining < 10) {
-            suffix += "is scarce";
+        if(this.remaining === 0){
+            suffix += "is gone";
         } else if (this.remaining < 5) {
             suffix += "is almost gone";
-        } else if (this.remaining === 0) {
-            suffix += "is gone";
+        } else if (this.remaining < 10) {
+            suffix += "is scarce";
+        } else if (this.remaining < 25) {
+            suffix += "is dwindling";
+        } else if (this.remaining < 50) {
+            suffix += "is abundant";
         } else {
             suffix += "is copious";
         }
@@ -106,7 +108,7 @@ outpost.Characteristics = (function() {
     }
 
     function calculate_water() {
-        return survivor.CharacterManager.get_alive().length * current_outpost.outpost_water;
+        return survivor.CharacterManager.get_alive().length * current_outpost.outpost_water * 5;
     }
 
     function calculate_food() {

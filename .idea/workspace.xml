@@ -46,18 +46,28 @@
       <file leaf-file-name="Night.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Night.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UIController.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="design_notes.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/design_notes.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="70" selection-start-line="16" selection-start-column="70" selection-end-line="16" selection-end-column="70" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UIController.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UIController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state relative-caret-position="264">
+              <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
               <folding>
                 <element signature="n#!!doc;n#start#0" expanded="false" />
               </folding>
@@ -80,8 +90,8 @@
       <file leaf-file-name="Location.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Location.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="104" column="33" selection-start-line="104" selection-start-column="33" selection-end-line="104" selection-end-column="33" />
+            <state relative-caret-position="255">
+              <caret line="18" column="101" selection-start-line="18" selection-start-column="101" selection-end-line="18" selection-end-column="101" />
               <folding />
             </state>
           </provider>
@@ -117,9 +127,10 @@
         <option value="$PROJECT_DIR$/page.html" />
         <option value="$PROJECT_DIR$/Helper.js" />
         <option value="$PROJECT_DIR$/Survivor.js" />
-        <option value="$PROJECT_DIR$/Location.js" />
         <option value="$PROJECT_DIR$/Night.js" />
         <option value="$PROJECT_DIR$/UIController.js" />
+        <option value="$PROJECT_DIR$/Location.js" />
+        <option value="$PROJECT_DIR$/design_notes.txt" />
       </list>
     </option>
   </component>
@@ -238,12 +249,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1471802449868</updated>
-      <workItem from="1471802454564" duration="68311000" />
+      <workItem from="1471802454564" duration="69766000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68311000" />
+    <option name="totallyTimeSpent" value="69766000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -317,12 +328,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Survivor.js">
+    <entry file="file://$PROJECT_DIR$/UIController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="88" column="55" selection-start-line="88" selection-start-column="55" selection-end-line="88" selection-end-column="55" />
+        <state relative-caret-position="264">
+          <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
           <folding>
-            <element signature="e#0#42#0" expanded="false" />
+            <element signature="n#!!doc;n#start#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -337,29 +348,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Survivor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="88" column="55" selection-start-line="88" selection-start-column="55" selection-end-line="88" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Location.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="104" column="33" selection-start-line="104" selection-start-column="33" selection-end-line="104" selection-end-column="33" />
+        <state relative-caret-position="255">
+          <caret line="18" column="101" selection-start-line="18" selection-start-column="101" selection-end-line="18" selection-end-column="101" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Night.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UIController.js">
+    <entry file="file://$PROJECT_DIR$/design_notes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc;n#start#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="272">
+          <caret line="16" column="70" selection-start-line="16" selection-start-column="70" selection-end-line="16" selection-end-column="70" />
+          <folding />
         </state>
       </provider>
     </entry>

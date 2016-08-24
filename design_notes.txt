@@ -1,0 +1,19 @@
+code-todo:
+
+buildable items
+end-goal
+fix effects from weather
+work out how to balance skill and gathering resources
+be able to move to a new area
+
+design:
+
+12 hour day (6am to 6pm), hour passes every (10?) seconds
+actions take time to complete
+things come at night to take resources or survivors
+temperature based on time as well as location and weather
+more traits (including professions e.g. engineers/chefs, and diseases?)
+new resource for building
+events e.g. animal attacks, fighting raiders, resource stockpile found
+
+
