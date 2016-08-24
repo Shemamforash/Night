@@ -35,12 +35,42 @@ body {
 }
 
 #phrase_label {
-    height: 60%;
+    height: 30%;
     float: left;
 }
 
-#world_info_label {
+#event_log {
     height: 40%;
+    float: left;
+}
+
+.event_div {
+    float: left;
+    height: 25%;
+}
+
+#event_one {
+    color: white;
+    font-size: 16px;
+}
+
+#event_two {
+    color: lightgray;
+    font-size: 14px;
+}
+
+#event_three {
+    color: gray;
+    font-size: 12px;
+}
+
+#event_four {
+    color: dimgray;
+    font-size: 10px;
+}
+
+#world_info_label {
+    height: 30%;
 }
 
 .world_info {
@@ -162,4 +192,11 @@ body {
 
 .survivor_resource {
     width: 7%;
+}
+
+.survivor_actions {
+    width: 16%;
+    background: black;
+    color: white;
+    padding: 2px;
 }

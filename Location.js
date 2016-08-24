@@ -24,7 +24,17 @@ function createResource(type) {
 
         },
         gather : function(survivor) {
-            //Do things
+            var skill;
+            if(this.type === "Fuel") {
+                skill = survivor.fuel_find_skill / 100;
+            } else if(this.type === "Water"){
+                skill = survivor.water_find_skill / 100;
+            } else {
+                skill = survivor.food_find_skill / 100;
+            }
+            var found = this.remaining * skill;
+            this.remaining -= found;
+            return found;
         }
     };
 }

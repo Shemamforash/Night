@@ -70,6 +70,32 @@ survivor.CharacterCreator = (function() {
     var preferred_outpost = [];
     var disliked_outpost = [];
 
+    function create_action(n, f){
+        return {
+            action_name: n,
+            execute_action: function(s) {
+                post_event(f(s));
+            }
+        };
+    }
+
+    var actions = [];
+    actions.push(create_action("Find Water", function(s){
+        var found = outpost.Characteristics.get_water().gather(s);
+        world.Resources.update_water(found);
+        return s.survivor_name + " found " + Math.round(found * 10) / 10 + " litres of water";
+    }));
+    actions.push(create_action("Find Food", function(s){
+        var found = outpost.Characteristics.get_food().gather(s);
+        world.Resources.update_food(found);
+        return s.survivor_name + " found " + Math.round(found * 10) / 10 + " morsels of food";
+    }));
+    actions.push(create_action("Find Fuel", function(s){
+        var found = outpost.Characteristics.get_fuel().gather(s);
+        world.Resources.update_fuel(found);
+        return s.survivor_name + " found " + Math.round(found * 10) / 10 + " tanks of fuel";
+    }));
+
     var preferred_temperature = 17 + Math.randomInt(8);
 
     //Show outpost_name, trait_1, trait_2, fuel/water/food need and skill, strength
@@ -93,7 +119,16 @@ survivor.CharacterCreator = (function() {
         disliked_weather: disliked_weather,
         preferred_outpost: preferred_outpost,
         disliked_outpost: disliked_outpost,
-        preferred_temperature: preferred_temperature
+        preferred_temperature: preferred_temperature,
+        actions: actions,
+        get_action_by_name : function(name) {
+            for(var i = 0; i < actions.length; ++i){
+                if(actions[i].action_name === name) {
+                    return actions[i];
+                }
+            }
+            return null;
+        }
     }
 });
 
@@ -109,7 +144,7 @@ survivor.CharacterManager = (function() {
             new_char.trait_2.execute_trait(new_char);
             survivors_alive.push(new_char);
             add_survivor_elements(new_char);
-            return new_char;
+            return new_char.survivor_name + " has joined the group";
         },
         kill_survivor : function(s) {
             survivors_alive.remove(s);
@@ -123,6 +158,14 @@ survivor.CharacterManager = (function() {
         },
         get_all : function() {
             return survivors_alive + survivors_dead;
+        },
+        get_character_by_name : function(name) {
+            for(var i = 0; i < survivors_alive.length; ++i){
+                if(survivors_alive[i].survivor_name === name){
+                    return survivors_alive[i];
+                }
+            }
+            return null;
         }
     };
 

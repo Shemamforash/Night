@@ -5,8 +5,8 @@ function start() {
     $(document).on("click", ".toggle_button", function(){
         $(this).toggleClass("down");
     });
+    post_event(survivor.CharacterManager.create_survivor());
     outpost.Characteristics.get_new_outpost();
-    survivor.CharacterManager.create_survivor();
     world.General.advance_day();
     setInterval(updateUI, 16);
 }
@@ -22,6 +22,13 @@ var survivor_elements = (function() {
         }
     };
 }());
+
+function post_event(event) {
+    $("#event_four").text($("#event_three").text());
+    $("#event_three").text($("#event_two").text());
+    $("#event_two").text($("#event_one").text());
+    $("#event_one").text(event);
+}
 
 function add_survivor_elements(s) {
     var $div = $("<div>", {id: s.survivor_name, "class": "survivor_div"});
@@ -39,6 +46,19 @@ function add_survivor_elements(s) {
     var $toggle_div = $("<div>", {"class": "toggle_div"});
     $div.append($toggle_div);
     $toggle_div.append("<a class=\"toggle_button\"></a>");
+
+    var $dropdown = $("<select>", {"class": "survivor_actions"});
+    $div.append($dropdown);
+    $dropdown.change(function(){
+        var action = $($dropdown).find(":selected").text();
+        var survivor_name = $($dropdown).find(":selected").val();
+        var s = survivor.CharacterManager.get_character_by_name(survivor_name);
+        s.get_action_by_name(action).execute_action(s);
+    });
+
+    for(var i = 0; i < s.actions.length; ++i){
+        $dropdown.append("<option value=\"" + s.survivor_name + "\">" + s.actions[i].action_name + "</option>");
+    }
 
     var $tooltip = $("<span>", {id: (s.survivor_name + "_tooltip"), "class": "tooltip_span"});
     //Tooltip shows age, gender, weight, backstory, preferred temp/weather/outpost

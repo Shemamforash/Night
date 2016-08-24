@@ -17,7 +17,7 @@ world.General = (function() {
         temperature = Math.floor(temperature);
         outpost.Characteristics.change_weather(currentweather);
         if(Math.random() < 0.4){
-            survivor.CharacterManager.create_survivor();
+            post_event(survivor.CharacterManager.create_survivor());
         }
         ready = true;
     }
