@@ -1,0 +1,54 @@
+open page
+pause game
+wait for dom
+check if save exists
+    yes -> load save
+    no -> use initial values
+        - create new day
+        - new character * 2
+
+unpause game
+run timer from 6AM to 7PM
+    - player choose actions
+        - character inactive
+        - returns at end of time
+        - chance for failure based on danger
+    - thirst and hunger increases
+        - water and food consumed
+        - chance for death
+    - chance for random survivor to turn up
+    - higher chance of losing survivor if out after 7
+    - vary temperature
+        - affects thirst, hunger, strength, skills
+pause game
+show end day screen
+    - player chooses to move or stay
+        stay -> create new day
+        move -> create new environment
+
+create new day ->
+    - select appropriate weather
+    - calculate temperature range
+    - modify water and food quantities in environment
+    - advance danger
+
+create new environment ->
+    - select random environment
+    - create random day
+    - move danger away
+    - kill survivors left behind
+
+new character ->
+    - random gender
+    - generate name
+    - random backstory
+    - random age
+    - random weight
+    - calculate strength
+    - calculate skills
+    - calculate needs
+    - set preferred temperature, environment, weather
+    - random traits
+    - modify skills, needs
+
+

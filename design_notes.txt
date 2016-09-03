@@ -116,7 +116,7 @@ survivor:
                 FARMER herd chickens: gain food over time (no use)
                 BAITER lay bait: increase food in environment (uses food to build)
 
-survivor traits (33):
+survivor traits:
         OBESE: greater hunger and thirst, greater malnutrition tolerance, lower dehydration tolerance, high fuel requirement
         SURVIVOR: low strength, low hunger and thirst, high tolerance
         HUNTER: very high food skill
@@ -157,6 +157,40 @@ survivor traits (33):
         FARMER herd chickens: gain food over time (no use)
         BAITER lay bait: increase food in environment (uses food to build)
 
+environments:
+    environments have a carrying capacity
+        if the carrying capacity is lower than the number of colonists, some will be lost
+        however if the carrying capacity is greater, then colonists can be gained
+    environments have a climate, which dictates the types of weather that typically occur
+    there is a danger associated with each climate, though the cause of the danger may vary
+    environments have varying quantities of fuel, water, and food available
+    altitude level gives bonuses to certain traits, as does climate
+    types;
+        wasteland
+        mountains
+        ravines
+        abandoned
+        oasis
+        marsh
+        heath
+        prairie
+
+weather:
+    weathers are categorised by temperature (hot, med, cold), and conditions (wet, dry, storm)
+    the temperature affects the range of day temperatures
+    conditions gives bonuses to certain traits
+    the weather can reduce or top up the water and food of environments
+    weather can also have an associated danger level, again the causes can vary
+    types;
+        drizzle
+        rainy
+        clear
+        cloudy
+        thunderstorm
+        foggy
+        sandstorm
+        floods
+        frost
 
 
 

@@ -10,6 +10,8 @@ resources.WorldResources = (function() {
     var world_water;
     var world_fuel;
     var world_food;
+
+
 }());
 
 function createResource(r_name) {

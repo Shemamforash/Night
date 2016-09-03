@@ -6,11 +6,11 @@ var outpost = {};
 
 function createResource(r_name) {
     var resource = helper.resource_creator(r_name);
-    resource.gather = function(survivor) {
+    resource.gather = function (survivor) {
         var skill;
-        if(this.resource_name === "Fuel") {
+        if (this.resource_name === "Fuel") {
             skill = survivor.fuel_find_skill;
-        } else if(this.resource_name === "Water"){
+        } else if (this.resource_name === "Water") {
             skill = survivor.water_find_skill;
         } else {
             skill = survivor.food_find_skill;
@@ -19,13 +19,13 @@ function createResource(r_name) {
         //Should be affected by how much they can carry (strength) and how much they can find (skill)
         var max_find = helper.randomInt(5) + 5;
         var found = max_find * skill / 50;
-        if(found > this.remaining){
+        if (found > this.remaining) {
             found = this.remaining;
         }
         this.remaining -= found;
 
         var suffix = "The " + this.resource_name + " ";
-        if(this.remaining === 0){
+        if (this.remaining === 0) {
             suffix += "is gone";
         } else if (this.remaining < 5) {
             suffix += "is almost gone";
@@ -46,11 +46,11 @@ function createResource(r_name) {
     return resource;
 }
 
-outpost.Templates = (function() {
-    function outpost_constructor(name, cap, fuel, water, food, climate, danger){
+outpost.Templates = (function () {
+    function outpost_constructor(name, cap, fuel, water, food, climate, danger) {
         return {
             outpost_name: name,
-            outpost_carrying_capacity : cap,
+            outpost_carrying_capacity: cap,
             outpost_fuel: fuel,
             outpost_water: water,
             outpost_food: food,
@@ -76,12 +76,12 @@ outpost.Templates = (function() {
     var outpost_types = [outpost_wasteland, outpost_mountains, outpost_ravines, outpost_abandoned, outpost_oasis, outpost_marsh];
 
     return {
-        get_new_outpost : function() {
+        get_new_outpost: function () {
             return outpost_types[helper.randomInt(outpost_types.length)];
         },
-        get_outpost_by_name : function(name) {
-            for(var i = 0; i < outpost_types.length; ++i){
-                if(outpost_types[i].outpost_name === name){
+        get_outpost_by_name: function (name) {
+            for (var i = 0; i < outpost_types.length; ++i) {
+                if (outpost_types[i].outpost_name === name) {
                     return outpost_types[i];
                 }
             }
@@ -89,7 +89,7 @@ outpost.Templates = (function() {
     };
 }());
 
-outpost.Characteristics = (function() {
+outpost.Characteristics = (function () {
     "use strict";
     var current_outpost;
     var fuel = createResource("Fuel");
@@ -116,22 +116,22 @@ outpost.Characteristics = (function() {
     }
 
     return {
-        get_current_outpost : function() {
+        get_current_outpost: function () {
             return current_outpost;
         },
-        get_new_outpost : function() {
+        get_new_outpost: function () {
             assign_type();
         },
-        get_water : function() {
+        get_water: function () {
             return water;
         },
-        get_fuel : function() {
+        get_fuel: function () {
             return fuel;
         },
-        get_food : function() {
+        get_food: function () {
             return food;
         },
-        change_weather : function(weather) {
+        change_weather: function (weather) {
             food.increase(weather.food_bonus);
             water.increase(weather.water_bonus);
         }

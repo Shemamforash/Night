@@ -12,7 +12,17 @@ helper.create_function_wrapper = function(n, f){
         function_name: n,
         execute: f
     }
-}
+};
+
+helper.shuffle = function(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+};
 
 helper.resource_creator = function(name) {
     return {

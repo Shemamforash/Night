@@ -3,20 +3,53 @@
  */
 var world = {};
 
+world.Time = (function() {
+    var day = 0;
+    var time = 6;
+    var paused = true;
+
+    setInterval(function() {
+        if(!paused){
+            update_time();
+        }
+    }, 10000); //every 10 seconds
+
+    function update_time() {
+        time += 1;
+        if(time === 19) {
+            paused = true;
+            time = 6;
+            change_day();
+        }
+    }
+
+    function change_day() {
+        //todo
+        //ui_screen();
+        //change_weather();
+        day += 1;
+    }
+
+    return {
+        pause : function() {
+            paused = true;
+        },
+        unpause : function() {
+            paused = false;
+        },
+        get_time : function() {
+            return time;
+        },
+        get_day : function() {
+            return day;
+        }
+    };
+}());
+
 world.kill_random = function() {
     var rand = helper.randomInt(survivor.CharacterManager.get_alive().length);
     return survivor.CharacterManager.kill_survivor(survivor.CharacterManager.get_alive()[rand]);
 };
-
-function shuffle(a) {
-    var j, x, i;
-    for (i = a.length; i; i--) {
-        j = Math.floor(Math.random() * i);
-        x = a[i - 1];
-        a[i - 1] = a[j];
-        a[j] = x;
-    }
-}
 
 world.feed_and_drink = function() {
     var preferred_survivors = [];
@@ -32,8 +65,8 @@ world.feed_and_drink = function() {
         }
     }
 
-    shuffle(preferred_survivors);
-    shuffle(others);
+    helper.shuffle(preferred_survivors);
+    helper.shuffle(others);
 
     for(i = 0; i < preferred_survivors.length; ++i){
         s = preferred_survivors[i];
@@ -48,13 +81,11 @@ world.feed_and_drink = function() {
 }
 
 world.General = (function() {
-    var day = 0;
     var temperature = 30;
     var currentweather;
     var ready = false;
 
     function changeDay() {
-        day += 1;
         currentweather = world.Weather.get_weather();
         outpost.Characteristics.change_weather(currentweather);
         var temp_variation = Math.random() * 2 + 9;
@@ -72,12 +103,6 @@ world.General = (function() {
     }
 
     return {
-        get_day : function() {
-            return day;
-        },
-        advance_day : function() {
-            changeDay();
-        },
         get_weather : function() {
             return currentweather;
         },
